@@ -10,21 +10,34 @@ datasource db {
 model User {
   id                 String     @id @default(auto()) @map("_id") @db.ObjectId
   email              String     @unique
-  name               String
   password           String
-  profile            Profile?
-  orders             Order[]
-  reviews            Review[]
   imageUrl           String?
   location           Location?
-  role               UserRole   @default(USER)
-  needPasswordChange Boolean
-  status             UserStatus
+  role               UserRole
+  needPasswordChange Boolean    @default(true)
+  status             UserStatus @default(ACTIVE)
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
-  admin              Admin?
+
+  admin   Admin?
+  profile Profile?
+  orders  Order[]
+  reviews Review[]
 
   @@map("users")
+}
+
+model Admin {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  email         String   @unique
+  name          String
+  contactNumber String
+  isDeleted     Boolean  @default(false)
+  user          User     @relation(fields: [email], references: [email])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("admins")
 }
 
 model Profile {
@@ -51,19 +64,6 @@ model Location {
   updatedAt  DateTime @updatedAt
 
   @@map("locations")
-}
-
-model Admin {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  email         String   @unique
-  name          String
-  contactNumber String
-  isDeleted     Boolean
-  user          User     @relation(fields: [email], references: [email])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@map("admins")
 }
 
 model Product {
