@@ -1,16 +1,17 @@
 import { RequestHandler } from "express";
-import { AdminService } from "./admin.service";
 
 import httpStatus from "http-status";
 import sendResponse from "../../../shared/sendResponse";
 import catchAsync from "../../../shared/catchAsync";
-import { adminFilterAbleFields } from "./admin.constant";
+
 import pick from "../../../shared/pick";
+import { CustomerService } from "./customer.service";
+import { adminFilterAbleFields } from "../Admin/admin.constant";
 
 const getAllFromDB: RequestHandler = catchAsync(async (req, res) => {
   const filters = pick(req.query, adminFilterAbleFields);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
-  const result = await AdminService.getAllFromDB(filters, options);
+  const result = await CustomerService.getAllFromDB(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -21,20 +22,6 @@ const getAllFromDB: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const getByIdFromDB: RequestHandler = catchAsync(async (req, res) => {
-  const { id } = req.params;
-
-  const result = await AdminService.getByIdFromDB(id);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Admin data shown successfully by Id !",
-    data: result,
-  });
-});
-
-export const AdminController = {
+export const CustomerController = {
   getAllFromDB,
-  getByIdFromDB,
 };

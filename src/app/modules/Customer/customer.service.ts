@@ -1,10 +1,11 @@
-import { Admin, Prisma, UserStatus } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 import prisma from "../../../shared/prisma";
-import { IAdminFilterRequest } from "./admin.interface";
+
 import { IPaginationOptions } from "../../interfaces/pagination";
 import { paginationHelper } from "../../../helpers/paginationHelper";
-import { adminSearchAbleFields } from "./admin.constant";
+import { adminSearchAbleFields } from "../Admin/admin.constant";
+import { IAdminFilterRequest } from "../Admin/admin.interface";
 
 const getAllFromDB = async (
   params: IAdminFilterRequest,
@@ -13,7 +14,7 @@ const getAllFromDB = async (
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.AdminWhereInput[] = [];
+  const andConditions: Prisma.CustomerWhereInput[] = [];
 
   //console.log(filterData);
   if (params.searchTerm) {
@@ -37,14 +38,10 @@ const getAllFromDB = async (
     });
   }
 
-  andConditions.push({
-    isDeleted: false,
-  });
+  console.dir(andConditions, { depth: "infinity" });
+  const whereConditions: Prisma.CustomerWhereInput = { AND: andConditions };
 
-  // console.dir(andConditions, { depth: "infinity" });
-  const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
-
-  const result = await prisma.admin.findMany({
+  const result = await prisma.customer.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -58,7 +55,7 @@ const getAllFromDB = async (
           },
   });
 
-  const total = await prisma.admin.count({
+  const total = await prisma.customer.count({
     where: whereConditions,
   });
 
@@ -72,17 +69,6 @@ const getAllFromDB = async (
   };
 };
 
-const getByIdFromDB = async (id: string) => {
-  const result = await prisma.admin.findUnique({
-    where: {
-      id,
-      isDeleted: false,
-    },
-  });
-  return result;
-};
-
-export const AdminService = {
+export const CustomerService = {
   getAllFromDB,
-  getByIdFromDB,
 };

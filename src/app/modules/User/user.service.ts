@@ -31,6 +31,44 @@ const createAdmin = async (payload: any) => {
   return result;
 };
 
+const createCustomer = async (payload: any) => {
+  console.log(payload);
+  if (!payload.customer || !payload.customer.email) {
+    throw new Error("Customer details are missing or invalid");
+  }
+
+  const hashPassword: string = await bcrypt.hash(payload.password, 12);
+  const userData = {
+    email: payload.customer.email,
+    password: hashPassword,
+    role: UserRole.CUSTOMER,
+  };
+
+  const result = await prisma.$transaction(async (tn) => {
+    const createdUser = await tn.user.create({
+      data: userData,
+    });
+
+    const createdCustomerData = await tn.customer.create({
+      data: {
+        email: payload.customer.email,
+        name: payload.customer.name,
+        contactNumber: payload.customer.contactNumber,
+        user: {
+          connect: {
+            id: createdUser.id,
+          },
+        },
+      },
+    });
+
+    return createdCustomerData;
+  });
+
+  return result;
+};
+
 export const UserService = {
   createAdmin,
+  createCustomer,
 };
