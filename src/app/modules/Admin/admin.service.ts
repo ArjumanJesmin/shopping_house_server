@@ -82,7 +82,61 @@ const getByIdFromDB = async (id: string) => {
   return result;
 };
 
+const updatedIntoDB = async (
+  id: string,
+  data: Partial<Admin>
+): Promise<Admin | null> => {
+  await prisma.admin.findUniqueOrThrow({
+    where: {
+      id,
+      isDeleted: false,
+    },
+  });
+
+  const result = await prisma.admin.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return result;
+};
+
+const softDeleteFromDB = async (id: string): Promise<Admin | null> => {
+  await prisma.admin.findFirstOrThrow({
+    where: {
+      id,
+      isDeleted: false,
+    },
+  });
+
+  const result = await prisma.$transaction(async (transactionClient) => {
+    const adminDeletedData = await transactionClient.admin.update({
+      where: {
+        id,
+      },
+      data: {
+        isDeleted: true,
+      },
+    });
+    await transactionClient.user.update({
+      where: {
+        email: adminDeletedData.email,
+      },
+      data: {
+        status: UserStatus.BLOCKED,
+      },
+    });
+
+    return adminDeletedData;
+  });
+
+  return result;
+};
+
 export const AdminService = {
   getAllFromDB,
   getByIdFromDB,
+  updatedIntoDB,
+  softDeleteFromDB,
 };

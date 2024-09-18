@@ -22,6 +22,34 @@ const getAllFromDB: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const getByIdFromDB: RequestHandler = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await CustomerService.getByIdFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Patient data shown successfully by Id !",
+    data: result,
+  });
+});
+
+const updateCustomerData: RequestHandler = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await CustomerService.updateCustomerData(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Customer data Updated!",
+    data: result,
+  });
+});
+
 export const CustomerController = {
   getAllFromDB,
+  getByIdFromDB,
+  updateCustomerData,
 };
