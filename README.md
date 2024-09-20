@@ -18,4 +18,4 @@ The application is written in TypeScript, which provides strong type safety, ens
   This project is ideal for anyone looking to build or extend an e-commerce platform with modern backend technologies.
 
 * npx prisma db push (command to migrate mongoDB)
-* This is a e-commerce project. This project configuration setup 16/09/2024
+* This is a e-commerce project. This project configuration setup 15/09/2024
