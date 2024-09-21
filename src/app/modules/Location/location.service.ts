@@ -9,6 +9,9 @@ const createLocationFromDB = async (payload: Location) => {
   return result;
 };
 
+const getAllFromDB = async () => {
+  return await prisma.location.findMany();
+};
 const getLocationById = async (id: string) => {
   return await prisma.location.findUnique({
     where: { id },
@@ -33,4 +36,5 @@ export const LocationService = {
   getLocationById,
   updateLocation,
   deleteLocation,
+  getAllFromDB,
 };

@@ -15,6 +15,16 @@ const createLocationFromDB = catchAsync(async (req, res) => {
   });
 });
 
+const getAllFromDB: RequestHandler = catchAsync(async (req, res) => {
+  const result = await LocationService.getAllFromDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Location data shown successfully by Id !",
+    data: result,
+  });
+});
 const getByIdFromDB: RequestHandler = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -55,6 +65,7 @@ const deleteLocation: RequestHandler = catchAsync(async (req, res) => {
 
 export const LocationController = {
   createLocationFromDB,
+  getAllFromDB,
   getByIdFromDB,
   updatedIntoDB,
   deleteLocation,
