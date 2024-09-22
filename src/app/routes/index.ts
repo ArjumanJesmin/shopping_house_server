@@ -6,6 +6,9 @@ import { AuthRoutes } from "../modules/Auth/auth.route";
 import { LocationRoute } from "../modules/Location/location.route";
 import { CategoryRoute } from "../modules/Category/category.route";
 import { ProductRoute } from "../modules/Product/product.route";
+import { ShoppingRoute } from "../modules/Shipping/shipping.route";
+import { OrderRoutes } from "../modules/Order/order.route";
+import { OrderItemRoute } from "../modules/OrderItem/orderItem.route";
 
 const router = express.Router();
 
@@ -37,6 +40,18 @@ const moduleRoutes = [
   {
     path: "/product",
     route: ProductRoute,
+  },
+  {
+    path: "/Shopping",
+    route: ShoppingRoute,
+  },
+  {
+    path: "/order",
+    route: OrderRoutes,
+  },
+  {
+    path: "/orderItem",
+    route: OrderItemRoute,
   },
 ];
 

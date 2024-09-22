@@ -38,7 +38,6 @@ const getAllFromDB = async (
     });
   }
 
-  console.dir(andConditions, { depth: "infinity" });
   const whereConditions: Prisma.CustomerWhereInput = { AND: andConditions };
 
   const result = await prisma.customer.findMany({
