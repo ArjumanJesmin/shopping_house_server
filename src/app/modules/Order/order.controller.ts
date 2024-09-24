@@ -6,7 +6,6 @@ import catchAsync from "../../../shared/catchAsync";
 
 import pick from "../../../shared/pick";
 
-import { adminFilterAbleFields } from "../Admin/admin.constant";
 import { OrderService } from "./order.service";
 
 const createOrder = catchAsync(async (req, res) => {

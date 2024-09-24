@@ -1,12 +1,21 @@
 import { Shipping } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 
-const createShipping = async (data: Shipping) => {
-  return await prisma.shipping.create({
+const createShipping = async (payload: Shipping) => {
+  const shipping = await prisma.shipping.create({
     data: {
-      ...data,
+      address: payload.address,
+      city: payload.city,
+      state: payload.state,
+      country: payload.country,
+      postalCode: payload.postalCode,
+      orderId: payload.orderId,
+    },
+    include: {
+      order: true,
     },
   });
+  return shipping;
 };
 
 // Get a single shipping record by ID
