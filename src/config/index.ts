@@ -14,4 +14,7 @@ export default {
     reset_pass_secret: process.env.RESET_PASS_TOKEN,
   },
   reset_pass_link: process.env.RESET_PASS_LINK,
+  signature_key: process.env.SIGNATURE_KEY,
+  payment_url: process.env.PAYMENT_URL,
+  store_id: process.env.STORE_ID,
 };
